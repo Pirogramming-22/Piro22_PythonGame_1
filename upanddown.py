@@ -1,15 +1,10 @@
 import random
 import time
 
-#멤버는 병합할 때 바꿀 예정 임시로 만든 리스트임
-player = "진수"
-members = ["준혁","혜린","승인","설아"]  
-members.insert(0, player)
-
-def up_and_down_game():
+def up_and_down_game(player_name, members, starting_player):
     print("==========업 앤 다운 게임==========")
     time.sleep(2)
-    print("\n1부터 100사이의 랜덤 숫자가 정해졌습니다!")
+    print(f"\n1부터 100사이의 랜덤 숫자가 정해졌습니다! {starting_player}부터 시작합니다.")
     time.sleep(2)
     print("\n그 숫자를 맞춰보세요!")
     time.sleep(2)
@@ -20,15 +15,19 @@ def up_and_down_game():
     #숫자 선택 범위
     range = [1,100]
 
+    #starting_player를 시작으로 순서 설정
+    members_order = members[members.index(starting_player):] + members[:members.index(starting_player)]
+
+
     while True:  # 게임이 끝날 때까지 반복
-        for member in members:
+        for member in members_order:
             print(f"\n=========={member}님의 차례입니다!==========")
             time.sleep(2)
 
-            if member == player:
+            if member == player_name:
                 # 올바른 입력을 받을 때까지 반복
                 while True:  
-                    user_input = input(f"{player}님, 숫자를 입력하세요! ({range[0]} ~ {range[1]}): ")
+                    user_input = input(f"{player_name}님, 숫자를 입력하세요! ({range[0]} ~ {range[1]}): ")
 
                     # 숫자인지 확인
                     if not user_input.isdigit():
@@ -67,4 +66,3 @@ def up_and_down_game():
                 print(f"맞춘 사람 빼고 나머지 다 마셔!🍺")
                 return member
 
-up_and_down_game_winner = up_and_down_game()
