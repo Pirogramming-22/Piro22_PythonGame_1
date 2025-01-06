@@ -4,7 +4,7 @@ from threading import Timer, Lock
 
 lock = Lock()
 
-def play(player_name, opponents_with_limits, player_lives):
+def play(player_name, opponents_with_limits, player_lives, first_game):
     players = [player_name] + list(opponents_with_limits.keys())  
     drink_count = {player: 0 for player in players}  
     player_timers = {player: round(random.uniform(0.1, 5.0), 1) for player in opponents_with_limits.keys()} 
@@ -49,7 +49,7 @@ def play(player_name, opponents_with_limits, player_lives):
             print(f" - {player}: {count}잔 마심🥴 (치사량까지 {remaining}잔 남음)")
         time.sleep(1)
 
-    print("\n❗ 게임 종료! ❗")
+    print("\n❗ 눈치게임 종료! ❗")
 
 def computer_speak(player, current_number, spoken_numbers):
     with lock:
@@ -77,9 +77,11 @@ def process_results(spoken_numbers, drink_count, player_lives, current_number):
             print(f"✅ 숫자 {number}를 동시 발언! {' '.join(players)} 모두 1잔 추가!✅")
             for player in players:
                 drink_count[player] += 1
+    time.sleep(1)
 
     if current_number in occurrences and len(occurrences[current_number]) == 1:
         last_spoken_player = get_last_spoken_player(spoken_numbers)
         if last_spoken_player:
             print(f"✅ 마지막으로 숫자를 외친 {last_spoken_player}님이 1잔 추가!✅")
             drink_count[last_spoken_player] += 1
+    time.sleep(1)
