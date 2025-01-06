@@ -1,93 +1,75 @@
 import time
 import random
 
-# 전역 변수
-user_list_without_me = []
-user_list_include_me = []
-result_of_choose = []
+def choosePerson(players):
+    result_of_choose = {}
+    for person in players:
+        while True:
+            random_person = random.choice(players)
+            if random_person != person:  # 자기 자신 제외
+                result_of_choose[person] = random_person
+                break
+    return result_of_choose
 
-# 지목 함수
-def choosePerson(num):
-    global result_of_choose
-    result_of_choose = []  # 초기화
-
-    # 무작위로 num만큼 지목
-    for _ in range(num):
-        random_person = random.choice(user_list_include_me)
-        result_of_choose.append(random_person)
-
-# TIME을 주어 시간차를 두고 한 명씩 지목
-def startPoint(num):
-    current_person = userName  # 사용자(`userName`)부터 시작
+def startPoint(players, result_of_choose, user_name, point_person, num):
+    current_person = user_name  # 사용자가 선택한 사람부터 시작
+    result_of_choose[user_name] = point_person  # 사용자가 지목한 사람 설정
     count = 1
+
     while count <= num:
-        next_person = result_of_choose[count - 1]  # 무작위로 지목된 사람 사용
-        print(current_person, "👉🏻", next_person, "   \"", count, "\"")
+        next_person = result_of_choose[current_person]  # 고정된 지목 대상
+        print(current_person, "👉🏻", next_person, f" \"{count}\"")
         time.sleep(0.5)
-        current_person = next_person  # 다음 사람으로 업데이트
+        current_person = next_person
         count += 1
 
-    looser = current_person
-    print(looser, "당첨 !!!")  # 최종 패자 출력
+    looser = current_person  # 최종 패자
+    print(looser, "당첨 !!!")
     return looser
 
-def theGameOfDeath(listWithoutUser, user):
-    global user_list_without_me, user_list_include_me, userName
-
-    userName = user
-    user_list_without_me = listWithoutUser[:]
-    user_list_include_me = listWithoutUser[:]
-    user_list_include_me.append(userName)
-
-    print("아싸 신난다 🎵 재미난다 🎵")
+def theGameOfDeath(user_name, opponents_with_limits, player_lives, starting_player):
+    players = list(opponents_with_limits.keys()) + [user_name]  # 모든 플레이어 목록
+    print("\n아싸 신난다 🎵 재미난다 🎵\n")
     time.sleep(1)
-    print("더 게임 오브 데쓰 ❕❕")
+    print("더 게임 오브 데쓰 ❕❕\n")
 
     bsShot = 3
-    looser = None
+    point_person = None
 
     # 첫 번째 단계: 사람 선택
-    pointPerson = None
     while bsShot > 0:
-        print("게임 참여자 목록 : ", user_list_without_me)
-        pointPerson = input("한 명을 가리키세요! : ").strip()  # 공백 제거
-        if pointPerson not in user_list_without_me:
-            print("잘못된 이름입니다!\n")
-            bsShot -= 1
-        elif pointPerson == userName:
-            print("자신을 선택할 수 없습니다!\n")
+        print("게임 참여자 목록:", ", ".join(opponents_with_limits.keys()))
+        point_person = input("한 명을 가리키세요! : ").strip()
+        if point_person not in players or point_person == user_name:
+            if point_person == user_name:
+                print("자신을 선택할 수 없습니다! 다시 선택하세요!\n")
+            else:
+                print("잘못된 이름입니다! 다시 선택하세요!\n")
             bsShot -= 1
         else:
             break
 
-    if bsShot == 0:
-        print("🎵🎵 바보샷! 바보샷! 바보샷은 인트로도 없어요 🎵🎵")
-        return userName
 
     # 두 번째 단계: 숫자 입력
     num = None
     while bsShot > 0:
-        num_input = input("숫자를 입력해주세요! : ")
-        if not num_input.isdigit():  # 숫자가 아닐 경우
-            print("정수를 입력해주세요!")
+        num_input = input("지목할 횟수를 입력해주세요: ")
+        if not num_input.isdigit():  # 숫자가 아닌 경우
+            print("정수를 입력해주세요!\n")
             bsShot -= 1
         else:
             num = int(num_input)
-            if num <= 0:  # 0 이하일 경우
-                print("0보다 큰 숫자를 입력해주세요!")
+            if num <= 0:
+                print("0보다 큰 숫자를 입력해주세요!\n")
                 bsShot -= 1
             else:
                 break
 
     if bsShot == 0:
-        print("🎵🎵 바보샷! 바보샷! 바보샷은 인트로도 없어요 🎵🎵")
-        return userName
+        print("🎵 바보샷! 바보샷! 바보샷은 인트로도 없어요 🎵\n\n")
+        return user_name  # 바보샷 소진 시 현재 사용자 반환
 
     # 세 번째 단계: 게임 진행
-    choosePerson(num)  # 사용자 입력을 기반으로 지목 순서 생성
-    looser = startPoint(num)  # 게임 시작
-
+    result_of_choose = choosePerson(players)  # 지목 대상 설정
+    looser = startPoint(players, result_of_choose, user_name, point_person, num)  # 게임 실행
     return looser
-
-# 게임 실행
-print("최종 패자: ", theGameOfDeath(["수연", "준혁", "설아"], "기훈"))
