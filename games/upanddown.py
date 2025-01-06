@@ -1,7 +1,8 @@
 import random
 import time
-def play(player_name, opponents, player_lives, starting_player):
-    print("==========업 앤 다운 게임==========")
+
+def play(player_name, opponents, player_lives, drink_count, starting_player):
+    print("========== 업 앤 다운 게임 ==========")
     time.sleep(2)
 
     participants = [player_name] + list(opponents.keys())
@@ -10,7 +11,7 @@ def play(player_name, opponents, player_lives, starting_player):
     print(f"\n{starting_player}님이 첫 번째 플레이어로 시작합니다!")
     turn = participants.index(starting_player)
 
-    print("\n1부터 100사이의 랜덤 숫자가 정해졌습니다! 그 숫자를 맞춰보세요!")
+    print("\n1부터 100 사이의 랜덤 숫자가 정해졌습니다! 그 숫자를 맞춰보세요!")
     time.sleep(2)
 
     target_number = random.randint(1, 100)
@@ -18,10 +19,11 @@ def play(player_name, opponents, player_lives, starting_player):
 
     while True:
         current_player = participants[turn % len(participants)]
-        print(f"\n=========={current_player}님의 차례입니다!==========")
+        print(f"\n========== {current_player}님의 차례입니다! ==========")
         time.sleep(2)
 
         if current_player == player_name:
+            # 플레이어 입력
             while True:
                 player_input = input(f"{player_name}님, 숫자를 입력하세요! ({guess_range[0]} ~ {guess_range[1]}): ").strip()
                 if not player_input.isdigit():
@@ -33,9 +35,11 @@ def play(player_name, opponents, player_lives, starting_player):
                     continue
                 break
         else:
+            # AI 플레이어 입력
             guess = random.randint(guess_range[0], guess_range[1])
             print(f"{current_player}님이 {guess}을(를) 선택했습니다!")
 
+        # 정답 체크
         if guess > target_number:
             print("\nDOWN! 더 작은 숫자를 입력하세요!")
             guess_range[1] = guess - 1
@@ -50,11 +54,17 @@ def play(player_name, opponents, player_lives, starting_player):
             for participant in participants:
                 if participant != current_player:
                     player_lives[participant] -= 1
+                    drink_count[participant] += 1  # 마신 잔 수 업데이트
 
+            # 현재 상태 출력
             print("\n현재 목숨 상태:")
             for player, lives in player_lives.items():
                 print(f" - {player}: {lives}잔 남음")
-            
+
+            print("\n누가 얼마나 마셨는지:")
+            for player, count in drink_count.items():
+                print(f" - {player}: {count}잔 마심 🍻")
+
             print("\n-----------------------------------")
             print("게임 선택 화면으로 돌아갑니다.\n")
             return

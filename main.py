@@ -111,10 +111,12 @@ if __name__ == "__main__":
     player_name = get_player_name()
     player_limit = select_drinking_limit()
     player_lives = {player_name: player_limit}
+    drink_count = {player_name: 0}  # 마신 잔 수 초기화
     opponents_with_limits = invite_opponents(player_name)
 
     for opponent, limit in opponents_with_limits.items():
         player_lives[opponent] = limit
+        drink_count[opponent] = 0  # 마신 잔 수 초기화
 
     first_game = True
 
@@ -123,22 +125,27 @@ if __name__ == "__main__":
         print(f"\n{selected_game}이(가) 선택되었습니다.")
         if selected_game == "369 게임":
             starting_player = random.choice([player_name] + list(opponents_with_limits.keys())) if not first_game else player_name
-            game_369.play(player_name, opponents_with_limits, player_lives, starting_player, first_game)
+            game_369.play(player_name, opponents_with_limits, player_lives, drink_count, starting_player, first_game)
         elif selected_game == "업앤다운 게임":
-            # 첫 번째 게임이 아닌 경우 새로운 시작 플레이어 선택
             starting_player = random.choice([player_name] + list(opponents_with_limits.keys())) if not first_game else player_name
-            upanddown.play(player_name, opponents_with_limits, player_lives, starting_player)
+            upanddown.play(player_name, opponents_with_limits, player_lives, drink_count, starting_player)
         elif selected_game == "눈치 게임":
-            game_nunchi.play(player_name, opponents_with_limits, player_lives, first_game)
+            game_nunchi.play(player_name, opponents_with_limits, player_lives, drink_count)
         elif selected_game == "더 게임 오브 데스":
             starting_player = random.choice([player_name] + list(opponents_with_limits.keys())) if not first_game else player_name
-            thegameofdeath.play(player_name, opponents_with_limits, player_lives, starting_player, first_game)
+            thegameofdeath.play(player_name, opponents_with_limits, player_lives, drink_count, starting_player, first_game)
         elif selected_game == "아파트 게임":
             starting_player = player_name if first_game else random.choice([player_name] + list(opponents_with_limits.keys()))
-            APT_GAME.play(player_name, opponents_with_limits, player_lives, first_game=first_game)
+            APT_GAME.play(player_name, opponents_with_limits, player_lives, drink_count, first_game=first_game)
 
         first_game = False
 
+        # 마신 잔 수 및 목숨 상태 출력
+        print("\n현재 상황:")
+        for player, lives in player_lives.items():
+            print(f"- {player}: {drink_count[player]}잔 마심🥴 (치사량까지 {lives}잔 남음)")
+
+        # 만취 상태 확인
         for player, lives in player_lives.items():
             if lives <= 0:
                 print(f"\n{player}(이)가 만취해서 잠들어버렸습니다... 술 게임 종료~!")

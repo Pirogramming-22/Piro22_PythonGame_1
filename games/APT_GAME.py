@@ -9,7 +9,7 @@ def hand_shuffle(players):
     random.shuffle(hands)
     return hands
 
-def play(player_name, opponents_with_limits, player_lives, first_game=True):
+def play(player_name, opponents_with_limits, player_lives, drink_count, first_game=True):
     participants = [player_name] + list(opponents_with_limits.keys())
 
     # 술래 설정
@@ -67,12 +67,9 @@ def play(player_name, opponents_with_limits, player_lives, first_game=True):
     print("마셔라~ 마셔라~ 마셔라~ 술이 들어간다!")
     time.sleep(2)
 
-    # 패자 목숨 감소
+    # 패자 목숨 감소 및 drink_count 업데이트
     player_lives[loser] -= 1
-    print(f"\n현재 목숨 상태:")
-    for player, lives in player_lives.items():
-        print(f"- {player}: {lives}잔 남음")
-    time.sleep(2)
+    drink_count[loser] += 1
 
     print("\n-----------------------------------")
     print("게임 선택 화면으로 돌아갑니다.\n")

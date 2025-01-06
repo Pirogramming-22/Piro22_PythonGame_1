@@ -1,7 +1,7 @@
 import random
 import time
 
-def play(player_name, opponents_with_limits, player_lives, starting_player=None, first_game=False):
+def play(player_name, opponents_with_limits, player_lives, drink_count, starting_player=None, first_game=False):
     participants = [player_name] + list(opponents_with_limits.keys())
 
     # 첫 번째 게임 이후 랜덤으로 새로운 첫 번째 플레이어 선택
@@ -38,9 +38,8 @@ def play(player_name, opponents_with_limits, player_lives, starting_player=None,
                 if player_input != correct_answer:
                     print(f"\n{current_player} >>>>> {player_input} (오답!)")
                     player_lives[current_player] -= 1
+                    drink_count[current_player] += 1  # 마신 잔 수 업데이트
                     print(f"\n누가 술을 마셔~ {current_player}(이)가 술을 마셔~ 원~~샷!!")
-                    print("-----------------------------------")
-                    print(f"남은 주량: {player_lives}")
 
                     time.sleep(2)
                     print("\n-----------------------------------")
@@ -66,12 +65,11 @@ def play(player_name, opponents_with_limits, player_lives, starting_player=None,
 
             if player_input != correct_answer:
                 player_lives[current_player] -= 1
+                drink_count[current_player] += 1  # 마신 잔 수 업데이트
                 print(f"\n누가 술을 마셔~ {current_player}(이)가 술을 마셔~ 원~~샷!!")
                 print("-----------------------------------")
-                print(f"남은 주량: {player_lives}")
 
                 time.sleep(2)
-                print("\n-----------------------------------")
                 print("게임 선택 화면으로 돌아갑니다.\n")
                 return  # 게임 종료 후 메인으로 돌아감
 
