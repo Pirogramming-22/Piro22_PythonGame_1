@@ -8,8 +8,9 @@ def play(player_name, opponents_with_limits, player_lives, drink_count):
     players = [player_name] + list(opponents_with_limits.keys())  
     player_timers = {player: round(random.uniform(0.1, 5.0), 1) for player in opponents_with_limits.keys()} 
     current_number = 1  
+    is_game_ended = False 
 
-    while not any(drink_count[player] > 0 for player in players):
+    while not is_game_ended:
         print(f"\n💕 {player_name}님, 셋 세고 눈치게임을 시작합니다!💕\n")
         print("하나!")
         time.sleep(1)
@@ -40,6 +41,7 @@ def play(player_name, opponents_with_limits, player_lives, drink_count):
         time.sleep(5)  
 
         process_results(spoken_numbers, drink_count, player_lives, current_number)  
+        is_game_ended = True
         current_number = 1  
 
 

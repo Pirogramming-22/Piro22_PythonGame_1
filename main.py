@@ -1,4 +1,5 @@
 import random
+import time
 from games import game_369  # 369 게임
 from games import upanddown  # 업앤다운 게임
 from games import game_nunchi  # 눈치게임
@@ -119,26 +120,33 @@ if __name__ == "__main__":
         drink_count[opponent] = 0  # 마신 잔 수 초기화
 
     first_game = True
+    starting_player = player_name  # 첫 번째 게임의 스타팅 플레이어는 항상 사용자로 설정
+    game_list = ["369 게임", "업앤다운 게임", "눈치 게임", "더 게임 오브 데스", "아파트 게임"]
 
     while True:
-        selected_game = show_game_list()
-        print(f"\n{selected_game}이(가) 선택되었습니다.")
+        if first_game:
+            selected_game = show_game_list()  # 첫 번째 게임은 사용자가 선택
+        else:
+            selected_game = random.choice(game_list)  # 이후 게임은 랜덤 선택
+        
+        time.sleep(1)
+        print("-----------------------------------")
+        print(f"\n{selected_game}이(가) 선택되었습니다.\n")
+
         if selected_game == "369 게임":
-            starting_player = random.choice([player_name] + list(opponents_with_limits.keys())) if not first_game else player_name
             game_369.play(player_name, opponents_with_limits, player_lives, drink_count, starting_player, first_game)
         elif selected_game == "업앤다운 게임":
-            starting_player = random.choice([player_name] + list(opponents_with_limits.keys())) if not first_game else player_name
             upanddown.play(player_name, opponents_with_limits, player_lives, drink_count, starting_player)
         elif selected_game == "눈치 게임":
             game_nunchi.play(player_name, opponents_with_limits, player_lives, drink_count)
         elif selected_game == "더 게임 오브 데스":
-            starting_player = random.choice([player_name] + list(opponents_with_limits.keys())) if not first_game else player_name
             thegameofdeath.play(player_name, opponents_with_limits, player_lives, drink_count, starting_player, first_game)
         elif selected_game == "아파트 게임":
-            starting_player = player_name if first_game else random.choice([player_name] + list(opponents_with_limits.keys()))
             APT_GAME.play(player_name, opponents_with_limits, player_lives, drink_count, first_game=first_game)
 
+        # 다음 게임을 위한 스타팅 플레이어 설정
         first_game = False
+        starting_player = random.choice([player_name] + list(opponents_with_limits.keys()))
 
         # 마신 잔 수 및 목숨 상태 출력
         print("\n현재 상황:")

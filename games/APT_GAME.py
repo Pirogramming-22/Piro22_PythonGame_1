@@ -11,7 +11,7 @@ def hand_shuffle(players):
 
 def play(player_name, opponents_with_limits, player_lives, drink_count, first_game=True):
     participants = [player_name] + list(opponents_with_limits.keys())
-
+    
     # 술래 설정
     if first_game:
         tagger = player_name
