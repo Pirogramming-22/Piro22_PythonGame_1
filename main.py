@@ -134,7 +134,8 @@ if __name__ == "__main__":
             starting_player = random.choice([player_name] + list(opponents_with_limits.keys())) if not first_game else player_name
             thegameofdeath.play(player_name, opponents_with_limits, player_lives, starting_player, first_game)
         elif selected_game == "아파트 게임":
-            APT_GAME.play(player_name, opponents_with_limits, player_lives)
+            starting_player = player_name if first_game else random.choice([player_name] + list(opponents_with_limits.keys()))
+            APT_GAME.play(player_name, opponents_with_limits, player_lives, first_game=first_game)
 
         first_game = False
 

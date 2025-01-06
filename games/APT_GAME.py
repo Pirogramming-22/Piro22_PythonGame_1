@@ -9,11 +9,15 @@ def hand_shuffle(players):
     random.shuffle(hands)
     return hands
 
-def play(player_name, opponents_with_limits, player_lives):
+def play(player_name, opponents_with_limits, player_lives, first_game=True):
     participants = [player_name] + list(opponents_with_limits.keys())
 
-    # 술래 선정
-    tagger = random.choice(participants)
+    # 술래 설정
+    if first_game:
+        tagger = player_name
+    else:
+        tagger = random.choice(participants)
+
     print(f"술래는 {tagger}!!!!")
     if tagger in ['설아', '진수']:
         print(f"{tagger}가~ 좋아하는 랜덤 게임~ 랜덤 게임~ 게임 스타트! ")
@@ -21,15 +25,21 @@ def play(player_name, opponents_with_limits, player_lives):
         print(f"{tagger}이가 좋아하는 랜덤 게임~ 랜덤 게임~ 게임 스타트! ")
     print("아파트 시작~!!!!!")
     time.sleep(2)
-    print("아파트 아파트~ 아파트 아파트~ 몇층??")
-    time.sleep(2)
 
     # 층수 설정
-    target_floor = random.randint(5, 30)
-    if tagger in ['설아', '진수']:
-        print(f"{tagger}가 외친 층수는 {target_floor}층!!!!")
+    if first_game or tagger == player_name:
+        while True:
+            try:
+                target_floor = int(input(f"{tagger}님, 몇 층으로 할까요? (5~30층): ").strip())
+                if 5 <= target_floor <= 30:
+                    break
+                else:
+                    print("⚠️ 5층에서 30층 사이의 숫자를 입력해주세요!")
+            except ValueError:
+                print("⚠️ 올바른 숫자를 입력해주세요!")
     else:
-        print(f"{tagger}이가 외친 층수는 {target_floor}층!!!!")
+        target_floor = random.randint(5, 30)
+        print(f"{tagger}님이 외친 층수는 {target_floor}층!!!!")
     time.sleep(2)
 
     # 손 섞기
