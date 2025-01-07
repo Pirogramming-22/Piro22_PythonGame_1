@@ -42,3 +42,8 @@
 ### 4. 회의 일정
 - 1월 5일 (오후 12시): 각자 브랜치를 파서 게임 업로드 및 게임 로직 설명 -> 메인 코드 기획
 - 1월 6일 (오후 11시): 변수명, 함수 로직 메인 코드와 동기화 -> 테스트 후 버그 수정, 메인 코드 로직 추가 및 변경
+
+### 5. 참고 링크
+* https://drive.google.com/file/d/1aAXK3ZICofg_z6f50OsNtOacNLBxOB2H/view
+
+* https://wepplication.github.io/tools/asciiArtGen/
