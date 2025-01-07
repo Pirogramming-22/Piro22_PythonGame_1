@@ -1,18 +1,31 @@
 import random
 import time
-from games import game_369  # 369 게임
-from games import upanddown  # 업앤다운 게임
-from games import game_nunchi  # 눈치게임
+from games import game_369  
+from games import upanddown 
+from games import game_nunchi
 from games import thegameofdeath
 from games import APT_GAME
 
 users = ["준혁", "설아", "승인", "혜린", "진수"]
 
 def start_game():
+    # ASCII 아트 정의
+    ascii_art = r"""
+______                    _                     _____                          _  _ 
+| ___ \                  | |                   |  __ \                        | || |
+| |_/ /  __ _  _ __    __| |  ___   _ __ ___   | |  \/  __ _  _ __ ___    ___ | || |
+|    /  / _` || '_ \  / _` | / _ \ | '_ ` _ \  | | __  / _` || '_ ` _ \  / _ \| || |
+| |\ \ | (_| || | | || (_| || (_) || | | | | | | |_\ \| (_| || | | | | ||  __/|_||_|
+\_| \_| \__,_||_| |_| \__,_| \___/ |_| |_| |_|  \____/ \__,_||_| |_| |_| \___|(_)(_)
+                                                                                    
+                                                                                    
+"""
     print("게임을 시작하시겠습니까? (y/n)")
     while True:
         choice = input(">> ").strip().lower()
         if choice == 'y':
+            print("-----------------------------------")
+            print(ascii_art)
             print("-----------------------------------")
             return True
         elif choice == 'n':
@@ -156,5 +169,16 @@ if __name__ == "__main__":
         # 만취 상태 확인
         for player, lives in player_lives.items():
             if lives <= 0:
+                print("-----------------------------------")
+                art = """
+                _____                           _____             _  _ 
+                |  __ \                         |  ___|           | || |
+                | |  \/  __ _  _ __ ___    ___  | |__   _ __    __| || |
+                | | __  / _` || '_ ` _ \  / _ \ |  __| | '_ \  / _` || |
+                | |_\ \| (_| || | | | | ||  __/ | |___ | | | || (_| ||_|
+                \____/ \__,_||_| |_| |_| \___| \____/ |_| |_| \__,_|(_)
+                """
+                print(art)
+                print("-----------------------------------")
                 print(f"\n{player}(이)가 만취해서 잠들어버렸습니다... 술 게임 종료~!")
                 exit()
